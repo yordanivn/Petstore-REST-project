@@ -1,0 +1,702 @@
+{
+	"info": {
+		"_postman_id": "09f17faf-7e9e-4b89-9251-f67274428515",
+		"name": "Petstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28802747"
+	},
+	"item": [
+		{
+			"name": "Pet",
+			"item": [
+				{
+					"name": "Add new pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseData = pm.response.json();",
+									"",
+									"const petId = pm.collectionVariables.get('id');",
+									"const petStatus = pm.collectionVariables.get('status');",
+									"",
+									"pm.collectionVariables.set(\"lastCreatedPetId\",responseData.id)",
+									"pm.collectionVariables.set(\"lastCreatedPetStatus\",responseData.status)",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3,\n    \"category\": {\n        \"id\": 1,\n        \"name\": \"Dog\"\n    },\n    \"name\": \"Mike\",\n    \"photoUrls\": [\n        \"photoUrls\"\n    ],\n    \"tags\": [\n        {\n            \"id\": 101,\n            \"name\": \"Playful\"\n        }\n    ],\n    \"status\": \"available\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/pet",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get pet by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/pet/{{lastCreatedPetId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"pet",
+								"{{lastCreatedPetId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find pets by status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/pet/findByStatus?status=sold,pending,available",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"pet",
+								"findByStatus"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "sold,pending,available"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update an existing pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 3,\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"Mike-edited\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"available\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/pet",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "---Upload image to existing pet by id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "dog1.jpeg",
+									"type": "file",
+									"src": "postman-cloud:///1ef8b1c5-0380-4b10-9a8a-2afbe6ebf3e5"
+								},
+								{
+									"key": "additionalMetadata",
+									"value": "dog1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/pet/1/uploadImage",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"pet",
+								"1",
+								"uploadImage"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Store",
+			"item": [
+				{
+					"name": "----Return pet inventory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}}/store/inventory",
+							"host": [
+								"{{baseURL}}}"
+							],
+							"path": [
+								"store",
+								"inventory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Place an order for a pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 252,\n    \"petId\": {{lastCreatedPetId}},\n    \"quantity\": 0,\n    \"shipDate\": \"2024-10-15T18:24:54.969Z\",\n    \"status\": \"placed\",\n    \"complete\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/store/order",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"store",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find purchase order by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/store/order/252",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"store",
+								"order",
+								"252"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the status code is 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"code\");",
+									"    pm.expect(responseJson).to.have.property(\"type\");",
+									"    pm.expect(responseJson).to.have.property(\"message\");",
+									"});",
+									"",
+									"// Verify the response code is 200",
+									"pm.test(\"Response code is 200\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.code).to.eql(200);",
+									"});",
+									"",
+									"// Check that the message matches the request ID",
+									"pm.test(\"Message matches the request ID\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    const requestId = pm.environment.get(\"randomId\").toString();",
+									"    pm.expect(responseJson.message).to.eql(requestId);",
+									"});",
+									"",
+									"// Verify the type is \"unknown\"",
+									"pm.test(\"Response type is 'unknown'\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
+									"});",
+									"",
+									"// Store the user ID from the response",
+									"const responseData = pm.response.json();",
+									"pm.collectionVariables.set(\"lastCreatedUserId\", responseData.message);",
+									"",
+									"// Generate the username based on the last created user ID",
+									"const lastCreatedUserId = responseData.message; // Get the last created user ID",
+									"const lastCreatedUsername = `user_${lastCreatedUserId}`; // Construct the username",
+									"pm.collectionVariables.set(\"lastCreatedUsername\", lastCreatedUsername); // Store it",
+									"",
+									"console.log(\"Username stored as lastCreatedUsername:\", lastCreatedUsername);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generate random unique ID",
+									"pm.environment.set(\"randomId\", Math.floor(Math.random() * 1000000));",
+									"",
+									"// Generate random username",
+									"//pm.environment.set(\"randomUsername\", `user_${Math.floor(Math.random()*10000)}`);",
+									"",
+									"// Generate random first name",
+									"pm.environment.set(\"randomFirstName\", `firstName_${Math.random().toString(36).substring(7)}`);",
+									"",
+									"// Generate random last name",
+									"pm.environment.set(\"randomLastName\", `lastName_${Math.random().toString(36).substring(7)}`);",
+									"",
+									"// Generate random email",
+									"pm.environment.set(\"randomEmail\", `email_${Math.random().toString(36).substring(7)}@test.com`);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": {{randomId}},\n  \"username\": \"user_{{randomId}}\",\n  \"firstName\": \"{{randomFirstName}}\",\n  \"lastName\": \"{{randomLastName}}\",\n  \"email\": \"{{randomEmail}}\",\n  \"password\": \"123456\",\n  \"phone\": \"111111\",\n  \"userStatus\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/user",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create list of users with given input array",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Verify the fields",
+									"pm.test(\"Response has expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"code\");",
+									"    pm.expect(responseJson).to.have.property(\"type\");",
+									"    pm.expect(responseJson).to.have.property(\"message\");",
+									"});",
+									"",
+									"//Verify the code is 200",
+									"pm.test(\"Response code is 200\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.code).to.eql(200);",
+									"});",
+									"",
+									"//Verify the type is unknown",
+									"pm.test(\"Response type is 'unknown'\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
+									"});",
+									"",
+									"//Verify the message is ok",
+									"pm.test(\"Message is 'ok'\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.message).to.eql(\"ok\");",
+									"});",
+									"",
+									"// Store the last username and user ID from the request body",
+									"const usersArray = JSON.parse(pm.environment.get(\"usersArray\")); // Get the users array",
+									"",
+									"if (Array.isArray(usersArray) && usersArray.length > 0) {",
+									"    const lastUser = usersArray[usersArray.length - 1]; // Get the last user",
+									"    const lastCreatedUserId = lastUser.id; // Get the ID of the last user",
+									"    const lastCreatedUsername = lastUser.username; // Get the username of the last user",
+									"    ",
+									"    // Store the last username and user ID as collection variables",
+									"    pm.collectionVariables.set(\"lastCreatedUsername\", lastCreatedUsername); // Store the last username",
+									"    pm.collectionVariables.set(\"lastCreatedUserId\", lastCreatedUserId); // Store the last created user ID",
+									"    ",
+									"    // Console logs to confirm storage",
+									"    console.log(\"Last username stored as lastCreatedUsername:\", lastCreatedUsername);",
+									"    console.log(\"Last user ID stored as lastCreatedUserId:\", lastCreatedUserId);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function getRandomNumber() {",
+									"    return Math.floor(Math.random() * 1000000);",
+									"}",
+									"",
+									"// Generate an array of random users",
+									"let users = [];",
+									"for (let i = 0; i < 5; i++) {",
+									"    let randomNumber = getRandomNumber();",
+									"    let user = {",
+									"        id: randomNumber,",
+									"        username: `user_${randomNumber}`, // Set the username correctly here",
+									"        firstName: `firstName_${randomNumber}`,",
+									"        lastName: `lastName_${randomNumber}`,",
+									"        email: `email_${randomNumber}`,",
+									"        password: \"123456\",",
+									"        phone: \"111111\",",
+									"        userStatus: 0",
+									"    };",
+									"    users.push(user);",
+									"}",
+									"",
+									"// Set the array in the environment variable",
+									"pm.environment.set(\"usersArray\", JSON.stringify(users));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{usersArray}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/user/createWithArray",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								"createWithArray"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/user/{{lastCreatedUsername}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								"{{lastCreatedUsername}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generate random first name",
+									"pm.environment.set(\"randomFirstName\", `firstName_${Math.random().toString(36).substring(7)}`);",
+									"",
+									"// Generate random last name",
+									"pm.environment.set(\"randomLastName\", `lastName_${Math.random().toString(36).substring(7)}`);",
+									"",
+									"// Generate random email",
+									"pm.environment.set(\"randomEmail\", `email_${Math.random().toString(36).substring(7)}@test.com`);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to verify the status code is 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"code\");",
+									"    pm.expect(responseJson).to.have.property(\"type\");",
+									"    pm.expect(responseJson).to.have.property(\"message\");",
+									"});",
+									"",
+									"// Verify the response code is 200",
+									"pm.test(\"Response code is 200\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.code).to.eql(200);",
+									"});",
+									"",
+									"// Check that the message matches the request ID",
+									"pm.test(\"Message matches the request ID\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    const requestId = pm.environment.get(\"randomId\").toString();",
+									"    pm.expect(responseJson.message).to.eql(requestId);",
+									"});",
+									"",
+									"// Verify the type is \"unknown\"",
+									"pm.test(\"Response type is 'unknown'\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
+									"});",
+									"",
+									"// Store the user ID from the response",
+									"const responseData = pm.response.json();",
+									"pm.collectionVariables.set(\"lastCreatedUserId\", responseData.message);",
+									"",
+									"// Generate the username based on the last created user ID",
+									"const lastCreatedUserId = responseData.message; // Get the last created user ID",
+									"const lastCreatedUsername = `user_${lastCreatedUserId}`; // Construct the username",
+									"pm.collectionVariables.set(\"lastCreatedUsername\", lastCreatedUsername); // Store it",
+									"pm.collectionVariables.set(\"lastCreatedUserId\",lastCreatedUserId);",
+									"",
+									"console.log(\"Username stored as lastCreatedUsername:\", lastCreatedUsername);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": {{lastCreatedUserId}},\n  \"username\": \"user_{{lastCreatedUserId}}_edited\", \n  \"firstName\": \"{{randomFirstName}}\",\n  \"lastName\": \"{{randomLastName}}\",\n  \"email\": \"{{randomEmail}}\",\n  \"password\": \"123456\",\n  \"phone\": \"111111\",\n  \"userStatus\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/user/{{lastCreatedUsername}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								"{{lastCreatedUsername}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log in user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/user/login?username=test632-edited&password=123456",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "test632-edited"
+								},
+								{
+									"key": "password",
+									"value": "123456"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/user/logout",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://petstore.swagger.io/v2",
+			"type": "string"
+		},
+		{
+			"key": "lastCreatedPetId",
+			"value": ""
+		},
+		{
+			"key": "lastCreatedPetStatus",
+			"value": ""
+		},
+		{
+			"key": "lastCreatedUsername",
+			"value": ""
+		},
+		{
+			"key": "lastCreatedUserId",
+			"value": ""
+		}
+	]
+}
