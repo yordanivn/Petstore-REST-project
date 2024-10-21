@@ -32,6 +32,56 @@
 								"type": "text/javascript",
 								"packages": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generate random unique ID for the pet",
+									"pm.environment.set(\"petId\", Math.floor(Math.random() * 1000000));",
+									"",
+									"// Randomly select a category from Mammal, Bird, Fish",
+									"const categories = [\"Mammal\", \"Bird\", \"Fish\"];",
+									"const categoryName = categories[Math.floor(Math.random() * categories.length)];",
+									"pm.environment.set(\"categoryName\", categoryName);",
+									"",
+									"// Set a constant categoryId based on the category",
+									"const categoryId = categories.indexOf(categoryName) + 1; // 1 for Mammal, 2 for Bird, 3 for Fish",
+									"pm.environment.set(\"categoryId\", categoryId);",
+									"",
+									"// Define animal names based on the category",
+									"const animalNames = {",
+									"    Mammal: [\"Dog\", \"Cat\", \"Rabbit\", \"Hamster\", \"Guinea Pig\"],",
+									"    Bird: [\"Parrot\", \"Finch\", \"Canary\", \"Budgie\", \"Pigeon\"],",
+									"    Fish: [\"Goldfish\", \"Betta Fish\", \"Tetra\", \"Guppy\", \"Molly\"]",
+									"};",
+									"",
+									"// Randomly pick an animal name based on the category",
+									"const nameList = animalNames[categoryName];",
+									"const animalName = nameList[Math.floor(Math.random() * nameList.length)];",
+									"pm.environment.set(\"petName\", animalName);",
+									"",
+									"// Set an empty photoUrl",
+									"pm.environment.set(\"photoUrl\", \"\");",
+									"",
+									"// Generate a random tagsId",
+									"const tagsId = Math.floor(Math.random() * 100);",
+									"pm.environment.set(\"tagsId\", tagsId);",
+									"",
+									"// Define tag names",
+									"const tagNames = [\"Playful\", \"Cuddly\", \"Energetic\", \"Independent\", \"Gentle\"];",
+									"",
+									"// Randomly pick a tag name",
+									"const tagName = tagNames[Math.floor(Math.random() * tagNames.length)];",
+									"pm.environment.set(\"tagName\", tagName);",
+									"",
+									"const status = [\"available\", \"pending\", \"sold\"];",
+									"const statusName = status[Math.floor(Math.random() * status.length)];",
+									"pm.environment.set(\"statusName\", statusName);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
 					],
 					"request": {
@@ -39,7 +89,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 3,\n    \"category\": {\n        \"id\": 1,\n        \"name\": \"Dog\"\n    },\n    \"name\": \"Mike\",\n    \"photoUrls\": [\n        \"photoUrls\"\n    ],\n    \"tags\": [\n        {\n            \"id\": 101,\n            \"name\": \"Playful\"\n        }\n    ],\n    \"status\": \"available\"\n}",
+							"raw": "{\n  \"id\": {{petId}},\n  \"category\": {\n    \"id\": {{categoryId}},\n    \"name\": \"{{categoryName}}\"\n  },\n  \"name\": \"{{petName}}\",\n  \"photoUrls\": [\n    \"{{photoUrl}}\"\n  ],\n  \"tags\": [\n    {\n      \"id\": {{tagsId}},\n      \"name\": \"{{tagName}}\"\n    }\n  ],\n  \"status\": \"{{statusName}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -110,7 +160,64 @@
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
-									""
+									"",
+									"const responseData = pm.response.json();",
+									"",
+									"const petId = pm.collectionVariables.get('id');",
+									"const petStatus = pm.collectionVariables.get('status');",
+									"",
+									"pm.collectionVariables.set(\"lastCreatedPetId\",responseData.id)",
+									"pm.collectionVariables.set(\"lastCreatedPetStatus\",responseData.status)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generate random unique ID for the pet",
+									"//pm.environment.set(\"petId\", Math.floor(Math.random() * 1000000));",
+									"",
+									"// Randomly select a category from Mammal, Bird, Fish",
+									"const categories = [\"Mammal\", \"Bird\", \"Fish\"];",
+									"const categoryName = categories[Math.floor(Math.random() * categories.length)];",
+									"pm.environment.set(\"categoryName\", categoryName);",
+									"",
+									"// Set a constant categoryId based on the category",
+									"const categoryId = categories.indexOf(categoryName) + 1; // 1 for Mammal, 2 for Bird, 3 for Fish",
+									"pm.environment.set(\"categoryId\", categoryId);",
+									"",
+									"// Define animal names based on the category",
+									"const animalNames = {",
+									"    Mammal: [\"Dog\", \"Cat\", \"Rabbit\", \"Hamster\", \"Guinea Pig\"],",
+									"    Bird: [\"Parrot\", \"Finch\", \"Canary\", \"Budgie\", \"Pigeon\"],",
+									"    Fish: [\"Goldfish\", \"Betta Fish\", \"Tetra\", \"Guppy\", \"Molly\"]",
+									"};",
+									"",
+									"// Randomly pick an animal name based on the category",
+									"const nameList = animalNames[categoryName];",
+									"const animalName = nameList[Math.floor(Math.random() * nameList.length)];",
+									"pm.environment.set(\"petName\", animalName);",
+									"",
+									"// Set an empty photoUrl",
+									"pm.environment.set(\"photoUrl\", \"\");",
+									"",
+									"// Generate a random tagsId",
+									"const tagsId = Math.floor(Math.random() * 100);",
+									"pm.environment.set(\"tagsId\", tagsId);",
+									"",
+									"// Define tag names",
+									"const tagNames = [\"Playful\", \"Cuddly\", \"Energetic\", \"Independent\", \"Gentle\"];",
+									"",
+									"// Randomly pick a tag name",
+									"const tagName = tagNames[Math.floor(Math.random() * tagNames.length)];",
+									"pm.environment.set(\"tagName\", tagName);",
+									"",
+									"const status = [\"available\", \"pending\", \"sold\"];",
+									"const statusName = status[Math.floor(Math.random() * status.length)];",
+									"pm.environment.set(\"statusName\", statusName);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -122,7 +229,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 3,\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"Mike-edited\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"available\"\n}",
+							"raw": "{\n  \"id\": {{lastCreatedPetId}},\n  \"category\": {\n    \"id\": {{categoryId}},\n    \"name\": \"{{categoryName}}\"\n  },\n  \"name\": \"{{petName}}+Edited\",\n  \"photoUrls\": [\n    \"{{photoUrl}}\"\n  ],\n  \"tags\": [\n    {\n      \"id\": {{tagsId}},\n      \"name\": \"{{tagName}}\"\n    }\n  ],\n  \"status\": \"{{statusName}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -142,15 +249,21 @@
 					"response": []
 				},
 				{
-					"name": "---Upload image to existing pet by id",
+					"name": "Upload image to existing pet by id",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "dog1.jpeg",
+									"key": "file",
 									"type": "file",
 									"src": "postman-cloud:///1ef8b1c5-0380-4b10-9a8a-2afbe6ebf3e5"
 								},
@@ -162,14 +275,47 @@
 							]
 						},
 						"url": {
-							"raw": "{{baseURL}}/pet/1/uploadImage",
+							"raw": "{{baseURL}}/pet/{{lastCreatedPetId}}/uploadImage",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"pet",
-								"1",
+								"{{lastCreatedPetId}}",
 								"uploadImage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updates a pet in the store with form data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "sold",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/pet/{{lastCreatedPetId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"pet",
+								"{{lastCreatedPetId}}"
 							]
 						}
 					},
@@ -550,11 +696,11 @@
 									"    pm.expect(responseJson.code).to.eql(200);",
 									"});",
 									"",
-									"// Check that the message matches the request ID",
-									"pm.test(\"Message matches the request ID\", function () {",
+									"// Check that the message matches the user ID",
+									"pm.test(\"Message matches the user ID\", function () {",
 									"    const responseJson = pm.response.json();",
-									"    const requestId = pm.environment.get(\"randomId\").toString();",
-									"    pm.expect(responseJson.message).to.eql(requestId);",
+									"    const lastCreatedUserId = pm.collectionVariables.get(\"lastCreatedUserId\");",
+									"    pm.expect(responseJson.message).to.eql(lastCreatedUserId);",
 									"});",
 									"",
 									"// Verify the type is \"unknown\"",
@@ -565,13 +711,13 @@
 									"",
 									"// Store the user ID from the response",
 									"const responseData = pm.response.json();",
-									"pm.collectionVariables.set(\"lastCreatedUserId\", responseData.message);",
+									"const updatedUserId = responseData.message; // Assuming message contains the user ID",
 									"",
-									"// Generate the username based on the last created user ID",
-									"const lastCreatedUserId = responseData.message; // Get the last created user ID",
-									"const lastCreatedUsername = `user_${lastCreatedUserId}`; // Construct the username",
+									"pm.collectionVariables.set(\"lastCreatedUserId\", updatedUserId);",
+									"",
+									"// Construct the username based on the last created user ID",
+									"const lastCreatedUsername = `user_${updatedUserId}_edited`; // Append \"_edited\" for clarity",
 									"pm.collectionVariables.set(\"lastCreatedUsername\", lastCreatedUsername); // Store it",
-									"pm.collectionVariables.set(\"lastCreatedUserId\",lastCreatedUserId);",
 									"",
 									"console.log(\"Username stored as lastCreatedUsername:\", lastCreatedUsername);"
 								],
