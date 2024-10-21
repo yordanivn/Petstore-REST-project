@@ -290,20 +290,66 @@
 				},
 				{
 					"name": "Updates a pet in the store with form data",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"code\");",
+									"    pm.expect(responseJson).to.have.property(\"type\");",
+									"    pm.expect(responseJson).to.have.property(\"message\");",
+									"});",
+									"",
+									"// Verify the type is \"unknown\"",
+									"pm.test(\"Response type is 'unknown'\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
+							"mode": "urlencoded",
+							"urlencoded": [
 								{
 									"key": "name",
-									"value": "",
+									"value": "edited",
 									"type": "text"
 								},
 								{
 									"key": "status",
-									"value": "sold",
+									"value": "pending",
 									"type": "text"
 								}
 							]
@@ -637,6 +683,47 @@
 				},
 				{
 					"name": "Get user by username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"lastCreatedUsername:\", pm.environment.get(\"lastCreatedUsername\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"",
+									"const responseData = pm.response.json();",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"id\");",
+									"    pm.expect(responseJson).to.have.property(\"username\");",
+									"    pm.expect(responseJson).to.have.property(\"firstName\");",
+									"    pm.expect(responseJson).to.have.property(\"lastName\");",
+									"    pm.expect(responseJson).to.have.property(\"email\");",
+									"    pm.expect(responseJson).to.have.property(\"password\");",
+									"    pm.expect(responseJson).to.have.property(\"phone\");",
+									"    pm.expect(responseJson).to.have.property(\"userStatus\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -753,11 +840,39 @@
 				},
 				{
 					"name": "Log in user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"const responseData = pm.response.json();",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"code\");",
+									"    pm.expect(responseJson).to.have.property(\"type\");",
+									"    pm.expect(responseJson).to.have.property(\"message\");",
+									"});",
+									"",
+									"// Verify the response code is 200",
+									"pm.test(\"Response code is 200\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.code).to.eql(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseURL}}/user/login?username=test632-edited&password=123456",
+							"raw": "{{baseURL}}/user/login?username={{lastCreatedUsername}}&password=123456",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -768,7 +883,7 @@
 							"query": [
 								{
 									"key": "username",
-									"value": "test632-edited"
+									"value": "{{lastCreatedUsername}}"
 								},
 								{
 									"key": "password",
@@ -781,6 +896,40 @@
 				},
 				{
 					"name": "Logout user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"const responseData = pm.response.json();",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"code\");",
+									"    pm.expect(responseJson).to.have.property(\"type\");",
+									"    pm.expect(responseJson).to.have.property(\"message\");",
+									"});",
+									"",
+									"// Verify the response code is 200",
+									"pm.test(\"Response code is 200\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.code).to.eql(200);",
+									"});",
+									"",
+									"// Verify the type is \"unknown\"",
+									"pm.test(\"Response type is 'unknown'\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
