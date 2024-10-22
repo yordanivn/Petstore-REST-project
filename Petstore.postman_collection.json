@@ -27,6 +27,24 @@
 									"",
 									"pm.collectionVariables.set(\"lastCreatedPetId\",responseData.id)",
 									"pm.collectionVariables.set(\"lastCreatedPetStatus\",responseData.status)",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"id\");",
+									"    pm.expect(responseJson).to.have.property(\"category\");",
+									"    pm.expect(responseJson).to.have.property(\"name\");",
+									"    pm.expect(responseJson).to.have.property(\"photoUrls\");",
+									"    pm.expect(responseJson).to.have.property(\"tags\");",
+									"    pm.expect(responseJson).to.have.property(\"status\");",
+									"});",
+									"",
+									"// Matches the request ID",
+									"pm.test(\"Message matches the request ID\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    const requestId = pm.environment.get(\"petId\");",
+									"    pm.expect(responseJson.id).to.eql(requestId);",
+									"});",
 									""
 								],
 								"type": "text/javascript",
@@ -110,6 +128,35 @@
 				},
 				{
 					"name": "Get pet by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseData = pm.response.json();",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"id\");",
+									"    pm.expect(responseJson).to.have.property(\"category\");",
+									"    pm.expect(responseJson).to.have.property(\"name\");",
+									"    pm.expect(responseJson).to.have.property(\"photoUrls\");",
+									"    pm.expect(responseJson).to.have.property(\"tags\");",
+									"    pm.expect(responseJson).to.have.property(\"status\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -128,6 +175,22 @@
 				},
 				{
 					"name": "Find pets by status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -167,7 +230,21 @@
 									"const petStatus = pm.collectionVariables.get('status');",
 									"",
 									"pm.collectionVariables.set(\"lastCreatedPetId\",responseData.id)",
-									"pm.collectionVariables.set(\"lastCreatedPetStatus\",responseData.status)"
+									"pm.collectionVariables.set(\"lastCreatedPetStatus\",responseData.status)",
+									"",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"id\");",
+									"    pm.expect(responseJson).to.have.property(\"category\");",
+									"    pm.expect(responseJson).to.have.property(\"name\");",
+									"    pm.expect(responseJson).to.have.property(\"photoUrls\");",
+									"    pm.expect(responseJson).to.have.property(\"tags\");",
+									"    pm.expect(responseJson).to.have.property(\"status\");",
+									"});",
+									"",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -250,6 +327,37 @@
 				},
 				{
 					"name": "Upload image to existing pet by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseData = pm.response.json();",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"code\");",
+									"    pm.expect(responseJson).to.have.property(\"type\");",
+									"    pm.expect(responseJson).to.have.property(\"message\");",
+									"});",
+									"",
+									"// Verify the type is \"unknown\"",
+									"pm.test(\"Response type is 'unknown'\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -354,6 +462,57 @@
 								}
 							]
 						},
+						"url": {
+							"raw": "{{baseURL}}/pet/{{lastCreatedPetId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"pet",
+								"{{lastCreatedPetId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify the response code is 200",
+									"pm.test(\"Response code is 200\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.code).to.eql(200);",
+									"});",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"code\");",
+									"    pm.expect(responseJson).to.have.property(\"type\");",
+									"    pm.expect(responseJson).to.have.property(\"message\");",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"const lastCreatedPetId = pm.collectionVariables.get(\"lastCreatedPetId\");",
+									"",
+									"// Check if the last created user is deleted",
+									"pm.test(\"The last created pet is deleted\", function () {",
+									"    pm.expect(responseJson.message).to.include(lastCreatedPetId); ",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
 						"url": {
 							"raw": "{{baseURL}}/pet/{{lastCreatedPetId}}",
 							"host": [
@@ -551,6 +710,58 @@
 					],
 					"request": {
 						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/store/order/{{lastCreatedOrderId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"store",
+								"order",
+								"{{lastCreatedOrderId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete purchase order by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify the response code is 200",
+									"pm.test(\"Response code is 200\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.code).to.eql(200);",
+									"});",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"code\");",
+									"    pm.expect(responseJson).to.have.property(\"type\");",
+									"    pm.expect(responseJson).to.have.property(\"message\");",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"const lastCreatedOrderId = pm.collectionVariables.get(\"lastCreatedOrderId\");",
+									"",
+									"// Check if the last created user is deleted",
+									"pm.test(\"The last created order is deleted\", function () {",
+									"    pm.expect(responseJson.message).to.include(lastCreatedOrderId); ",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
 						"header": [],
 						"url": {
 							"raw": "{{baseURL}}/store/order/{{lastCreatedOrderId}}",
@@ -1060,10 +1271,74 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify the response code is 200",
+									"pm.test(\"Response code is 200\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.code).to.eql(200);",
+									"});",
+									"",
+									"// Validate the response structure",
+									"pm.test(\"Response has all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"code\");",
+									"    pm.expect(responseJson).to.have.property(\"type\");",
+									"    pm.expect(responseJson).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"The last created user is deleted\", function () {",
+									"     const responseJson=pm.response.json();",
+									"     const lastCreatedUsername = pm.environment.get(\"lastCreatedUsername\"); ",
+									"     pm.expect(responseJson.message).to.be.eql(lastCreatedUsername)",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/user/{{lastCreatedUsername}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"user",
+								"{{lastCreatedUsername}}"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
 	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "api_key",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "special_key",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
