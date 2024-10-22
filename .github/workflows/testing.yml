@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run ./Petstore.postman_collection.json -r html  # Make sure this path is correct
+          newman run ./Petstore.postman_collection.json -r htmlextra –reporter-htmlextra-title “Automated test reporting”
 
       - name: Upload Report
         uses: actions/upload-artifact@v3
