@@ -27,10 +27,10 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run ./Petstore.postman_collection.json -r html  
+          newman run ./Petstore.postman_collection.json -r html  # Make sure this path is correct
 
       - name: Upload Report
         uses: actions/upload-artifact@v3
         with:
           name: postman-report
-          path: newman/*.html  # Adjust the path if necessary
+          path: newman/*.html  # This assumes the report is saved in the newman directory
