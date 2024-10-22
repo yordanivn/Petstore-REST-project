@@ -27,10 +27,10 @@ jobs:
 
       - name: Run Postman Collection
         run: |
-          newman run path/to/your/collection.json -r html
+          newman run /Users/yordan.i/Personal/Softuni/Petstore-REST-project/Petstore.postman_collection.json -r html
 
       - name: Upload Report
-        uses: actions/upload-artifact@v3  # Updated to v3
+        uses: actions/upload-artifact@v4  # Updated to v3
         with:
           name: postman-report
           path: newman/*.html  # Adjust the path if necessary
