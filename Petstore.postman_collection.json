@@ -373,7 +373,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "postman-cloud:///1ef8b1c5-0380-4b10-9a8a-2afbe6ebf3e5"
+									"src": "/Users/yordan.i/Personal/Softuni/Petstore-REST-project/dog1.jpeg"
 								},
 								{
 									"key": "additionalMetadata",
@@ -935,10 +935,6 @@
 									"    // Store the last username and user ID as collection variables",
 									"    pm.collectionVariables.set(\"lastCreatedUsername\", lastCreatedUsername); // Store the last username",
 									"    pm.collectionVariables.set(\"lastCreatedUserId\", lastCreatedUserId); // Store the last created user ID",
-									"    ",
-									"    // Console logs to confirm storage",
-									"    console.log(\"Last username stored as lastCreatedUsername:\", lastCreatedUsername);",
-									"    console.log(\"Last user ID stored as lastCreatedUserId:\", lastCreatedUserId);",
 									"}",
 									""
 								],
@@ -1014,7 +1010,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"console.log(\"lastCreatedUsername:\", pm.environment.get(\"lastCreatedUsername\"));"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -1027,8 +1023,6 @@
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
-									"",
-									"",
 									"",
 									"const responseData = pm.response.json();",
 									"",
@@ -1130,9 +1124,7 @@
 									"",
 									"// Construct the username based on the last created user ID",
 									"const lastCreatedUsername = `user_${updatedUserId}_edited`; // Append \"_edited\" for clarity",
-									"pm.collectionVariables.set(\"lastCreatedUsername\", lastCreatedUsername); // Store it",
-									"",
-									"console.log(\"Username stored as lastCreatedUsername:\", lastCreatedUsername);"
+									"pm.collectionVariables.set(\"lastCreatedUsername\", lastCreatedUsername); // Store it"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -1294,7 +1286,6 @@
 									"});",
 									"",
 									"const responseJson = pm.response.json();",
-									"console.log(\"Response JSON:\", responseJson);",
 									"const lastCreatedUsername = pm.collectionVariables.get(\"lastCreatedUsername\");",
 									"",
 									"// Check if the last created user is deleted",
@@ -1305,6 +1296,13 @@
 								],
 								"type": "text/javascript",
 								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
 							}
 						}
 					],

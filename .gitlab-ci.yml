@@ -1,0 +1,13 @@
+image: node:14  
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - npm install -g newman newman-reporter-html
+    - newman run /Users/yordan.i/Personal/Softuni/Petstore-REST-project/Petstore.postman_collection.json -r html 
+  artifacts:
+    paths:
+      - newman/*.html  # Specify the path to the generated HTML report
