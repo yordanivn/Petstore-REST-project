@@ -1,0 +1,36 @@
+name: Run Postman Tests
+
+on: 
+  push:
+    branches:
+      - main  # Change this to your target branch
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Specify the Node.js version
+
+      - name: Install Newman and Dependencies
+        run: |
+          npm install -g newman newman-reporter-html
+
+      - name: Run Postman Collection
+        run: |
+          newman run path/to/your/collection.json -r html
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v3  # Updated to v3
+        with:
+          name: postman-report
+          path: newman/*.html  # Adjust the path if necessary
