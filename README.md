@@ -1,31 +1,34 @@
 # Overview
-Petstore is a sample API that simulates a pet shop management server. The API allows you to access Petstore data using a set of individual calls. There are three endpoint groups: Pet, Store, and User. Playing around with this API documentation can help you understand how APIMatic docs provide value to you.
+Petstore is a sample API that simulates a pet shop management server. The API allows you to access Petstore data using a set of individual calls. There are three endpoint groups: Pet, Store, and User. 
 
 ## Features
 
 ### Manage Pets
-- **Overview**: This group contains every endpoint needed to manage pet records.
 - **Capabilities**:
   - Add new pets to the database.
-  - Remove pets from the records.
   - Retrieve pet information.
+  - Find pets by status.
   - Update existing pet records.
+  - Delete a pet.
+  
 - **Data Generation**:
-  - The Pet collection includes predefined arrays for animal categories (e.g., "Dogs," "Cats"), animals within those categories (e.g., "Labrador," "Siamese"), and descriptive tags (e.g., "friendly," "energetic"). This ensures that each new pet created is unique, with random combinations of these attributes.
+  - The Pet collection includes predefined arrays for animal categories (e.g., "Mammal," "Bird"), animals within those categories (e.g., "Dog," "Cat"), and descriptive tags (e.g., "Playful," "Cuddly"). This ensures that each new pet created is unique, with random combinations of these attributes.
 
 ### Manage Store
-- **Overview**: This group contains endpoints required to manage your orders.
 - **Capabilities**:
   - Create order records.
-  - Update order statuses.
+  - Find purchased order.
   - Retrieve inventory details.
+  - Delete purchase order.
 
 ### Manage Users
-- **Overview**: Manage your customer records through this endpoint group.
 - **Capabilities**:
+  - Create single user or list of users
   - Log in and log out users.
   - Update user profile information.
   - Retrieve user activity history.
+  - Delete user.
+
 - **Data Generation**:
   - Each user in the User collection has a randomly generated unique ID, username, first name, last name, and email address to ensure uniqueness.
 
