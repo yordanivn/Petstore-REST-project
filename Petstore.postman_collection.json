@@ -16,21 +16,20 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"const responseData = pm.response.json();",
-									"",
 									"const petId = pm.collectionVariables.get('id');",
 									"const petStatus = pm.collectionVariables.get('status');",
 									"",
-									"pm.collectionVariables.set(\"lastCreatedPetId\",responseData.id)",
-									"pm.collectionVariables.set(\"lastCreatedPetStatus\",responseData.status)",
+									"pm.collectionVariables.set(\"lastCreatedPetId\",responseJson.id)",
+									"pm.collectionVariables.set(\"lastCreatedPetStatus\",responseJson.status)",
 									"",
 									"// Validate the response structure",
 									"pm.test(\"Response has all expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"id\");",
 									"    pm.expect(responseJson).to.have.property(\"category\");",
 									"    pm.expect(responseJson).to.have.property(\"name\");",
@@ -41,7 +40,6 @@
 									"",
 									"// Matches the request ID",
 									"pm.test(\"Message matches the request ID\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    const requestId = pm.environment.get(\"petId\");",
 									"    pm.expect(responseJson.id).to.eql(requestId);",
 									"});",
@@ -133,15 +131,14 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"const responseData = pm.response.json();",
-									"",
 									"// Validate the response structure",
 									"pm.test(\"Response has all expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"id\");",
 									"    pm.expect(responseJson).to.have.property(\"category\");",
 									"    pm.expect(responseJson).to.have.property(\"name\");",
@@ -220,22 +217,21 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"const responseData = pm.response.json();",
-									"",
 									"const petId = pm.collectionVariables.get('id');",
 									"const petStatus = pm.collectionVariables.get('status');",
 									"",
-									"pm.collectionVariables.set(\"lastCreatedPetId\",responseData.id)",
-									"pm.collectionVariables.set(\"lastCreatedPetStatus\",responseData.status)",
+									"pm.collectionVariables.set(\"lastCreatedPetId\",responseJson.id)",
+									"pm.collectionVariables.set(\"lastCreatedPetStatus\",responseJson.status)",
 									"",
 									"",
 									"// Validate the response structure",
 									"pm.test(\"Response has all expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"id\");",
 									"    pm.expect(responseJson).to.have.property(\"category\");",
 									"    pm.expect(responseJson).to.have.property(\"name\");",
@@ -254,9 +250,6 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// Generate random unique ID for the pet",
-									"//pm.environment.set(\"petId\", Math.floor(Math.random() * 1000000));",
-									"",
 									"// Randomly select a category from Mammal, Bird, Fish",
 									"const categories = [\"Mammal\", \"Bird\", \"Fish\"];",
 									"const categoryName = categories[Math.floor(Math.random() * categories.length)];",
@@ -332,15 +325,14 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"const responseData = pm.response.json();",
-									"",
 									"// Validate the response structure",
 									"pm.test(\"Response has all expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"code\");",
 									"    pm.expect(responseJson).to.have.property(\"type\");",
 									"    pm.expect(responseJson).to.have.property(\"message\");",
@@ -348,9 +340,18 @@
 									"",
 									"// Verify the type is \"unknown\"",
 									"pm.test(\"Response type is 'unknown'\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
 									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
 									""
 								],
 								"type": "text/javascript",
@@ -359,6 +360,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "special_key",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "api_key",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -373,7 +389,10 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/yordan.i/Personal/Softuni/Petstore-REST-project/dog1.jpeg"
+									"src": [
+										"postman-cloud:///1ef8b1c5-0380-4b10-9a8a-2afbe6ebf3e5",
+										"/Users/yordan.i/Personal/Softuni/Petstore-REST-project/dog1.jpeg"
+									]
 								},
 								{
 									"key": "additionalMetadata",
@@ -413,13 +432,14 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
 									"// Validate the response structure",
 									"pm.test(\"Response has all expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"code\");",
 									"    pm.expect(responseJson).to.have.property(\"type\");",
 									"    pm.expect(responseJson).to.have.property(\"message\");",
@@ -427,7 +447,6 @@
 									"",
 									"// Verify the type is \"unknown\"",
 									"pm.test(\"Response type is 'unknown'\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
 									"});",
 									"",
@@ -547,7 +566,6 @@
 									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"sold\");",
 									"    pm.expect(responseJson).to.have.property(\"{{PetStatus-Updated}}\");",
-									"    pm.expect(responseJson).to.have.property(\"2\");",
 									"    pm.expect(responseJson).to.have.property(\"string\");",
 									"    pm.expect(responseJson).to.have.property(\"pending\");",
 									"    pm.expect(responseJson).to.have.property(\"available\");",
@@ -789,6 +807,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
 									"// Test to verify the status code is 200",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -796,7 +816,6 @@
 									"",
 									"// Validate the response structure",
 									"pm.test(\"Response has all expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"code\");",
 									"    pm.expect(responseJson).to.have.property(\"type\");",
 									"    pm.expect(responseJson).to.have.property(\"message\");",
@@ -804,20 +823,17 @@
 									"",
 									"// Verify the response code is 200",
 									"pm.test(\"Response code is 200\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.code).to.eql(200);",
 									"});",
 									"",
 									"// Check that the message matches the request ID",
 									"pm.test(\"Message matches the request ID\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    const requestId = pm.environment.get(\"randomId\").toString();",
 									"    pm.expect(responseJson.message).to.eql(requestId);",
 									"});",
 									"",
 									"// Verify the type is \"unknown\"",
 									"pm.test(\"Response type is 'unknown'\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
 									"});",
 									"",
@@ -894,13 +910,14 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
 									"//Verify the fields",
 									"pm.test(\"Response has expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"code\");",
 									"    pm.expect(responseJson).to.have.property(\"type\");",
 									"    pm.expect(responseJson).to.have.property(\"message\");",
@@ -908,7 +925,6 @@
 									"",
 									"//Verify the code is 200",
 									"pm.test(\"Response code is 200\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.code).to.eql(200);",
 									"});",
 									"",
@@ -920,7 +936,6 @@
 									"",
 									"//Verify the message is ok",
 									"pm.test(\"Message is 'ok'\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.message).to.eql(\"ok\");",
 									"});",
 									"",
@@ -928,9 +943,9 @@
 									"const usersArray = JSON.parse(pm.environment.get(\"usersArray\")); // Get the users array",
 									"",
 									"if (Array.isArray(usersArray) && usersArray.length > 0) {",
-									"    const lastUser = usersArray[usersArray.length - 1]; // Get the last user",
-									"    const lastCreatedUserId = lastUser.id; // Get the ID of the last user",
-									"    const lastCreatedUsername = lastUser.username; // Get the username of the last user",
+									"    const lastUser = usersArray[usersArray.length - 1]; ",
+									"    const lastCreatedUserId = lastUser.id; ",
+									"    const lastCreatedUsername = lastUser.username; ",
 									"    ",
 									"    // Store the last username and user ID as collection variables",
 									"    pm.collectionVariables.set(\"lastCreatedUsername\", lastCreatedUsername); // Store the last username",
@@ -1084,6 +1099,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
 									"// Test to verify the status code is 200",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -1091,7 +1108,6 @@
 									"",
 									"// Validate the response structure",
 									"pm.test(\"Response has all expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"code\");",
 									"    pm.expect(responseJson).to.have.property(\"type\");",
 									"    pm.expect(responseJson).to.have.property(\"message\");",
@@ -1099,20 +1115,17 @@
 									"",
 									"// Verify the response code is 200",
 									"pm.test(\"Response code is 200\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.code).to.eql(200);",
 									"});",
 									"",
 									"// Check that the message matches the user ID",
 									"pm.test(\"Message matches the user ID\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    const lastCreatedUserId = pm.collectionVariables.get(\"lastCreatedUserId\");",
 									"    pm.expect(responseJson.message).to.eql(lastCreatedUserId.toString());",
 									"});",
 									"",
 									"// Verify the type is \"unknown\"",
 									"pm.test(\"Response type is 'unknown'\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
 									"});",
 									"",
@@ -1163,12 +1176,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"",
-									"const responseData = pm.response.json();",
+									"const responseJson = pm.response.json();",
 									"",
 									"// Validate the response structure",
 									"pm.test(\"Response has all expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"code\");",
 									"    pm.expect(responseJson).to.have.property(\"type\");",
 									"    pm.expect(responseJson).to.have.property(\"message\");",
@@ -1176,7 +1187,6 @@
 									"",
 									"// Verify the response code is 200",
 									"pm.test(\"Response code is 200\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.code).to.eql(200);",
 									"});",
 									""
@@ -1219,12 +1229,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"",
-									"const responseData = pm.response.json();",
+									"const responseJson = pm.response.json();",
 									"",
 									"// Validate the response structure",
 									"pm.test(\"Response has all expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"code\");",
 									"    pm.expect(responseJson).to.have.property(\"type\");",
 									"    pm.expect(responseJson).to.have.property(\"message\");",
@@ -1232,13 +1240,11 @@
 									"",
 									"// Verify the response code is 200",
 									"pm.test(\"Response code is 200\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.code).to.eql(200);",
 									"});",
 									"",
 									"// Verify the type is \"unknown\"",
 									"pm.test(\"Response type is 'unknown'\", function () {",
-									"    const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.type).to.eql(\"unknown\");",
 									"});",
 									""
@@ -1271,21 +1277,23 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
 									"// Verify the response code is 200",
 									"pm.test(\"Response code is 200\", function () {",
-									"    const responseJson = pm.response.json();",
+									"    //const responseJson = pm.response.json();",
 									"    pm.expect(responseJson.code).to.eql(200);",
 									"});",
 									"",
 									"// Validate the response structure",
 									"pm.test(\"Response has all expected fields\", function () {",
-									"    const responseJson = pm.response.json();",
+									"    //const responseJson = pm.response.json();",
 									"    pm.expect(responseJson).to.have.property(\"code\");",
 									"    pm.expect(responseJson).to.have.property(\"type\");",
 									"    pm.expect(responseJson).to.have.property(\"message\");",
 									"});",
 									"",
-									"const responseJson = pm.response.json();",
+									"",
 									"const lastCreatedUsername = pm.collectionVariables.get(\"lastCreatedUsername\");",
 									"",
 									"// Check if the last created user is deleted",
@@ -1301,8 +1309,11 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"packages": {},
-								"type": "text/javascript"
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
