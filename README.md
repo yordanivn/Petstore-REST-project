@@ -44,3 +44,6 @@ Each request in the collection is equipped with automated tests to ensure the in
 - **Response Structure Validation**: Ensuring that the response contains the expected fields and data types.
 - **Response Code Validation**: Checking that the correct response code is returned based on the input.
 - **ID Matching**: Ensuring that the correct ID is returned or updated in the response.
+
+### Visual Reports with Newman
+- The API tests are executed using Newman, which generates detailed visual reports. These reports provide insights into the test results, including pass/fail status, response times, and any errors encountered during testing, ensuring comprehensive coverage and transparency.
